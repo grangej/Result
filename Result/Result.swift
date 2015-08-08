@@ -5,7 +5,7 @@
 //  Created by John Grange on 8/7/15.
 //  Copyright © 2015 SD Networks. All rights reserved.
 //
-//  
+//
 import Foundation
 
 /**
@@ -41,10 +41,20 @@ public enum Result<T, Error: ErrorType> {
         }
     }
     
+    /// Constructs a success wrapping a `value`.
+    public init(value: T) {
+        self = .Success(value)
+    }
+    
+    /// Constructs a failure wrapping an `error`.
+    public init(error: Error) {
+        self = .Failure(error)
+    }
+    
     /**
     Construct a result from a function that throws an error, useful in completion blocks
     
-    i.e. Result(try NSData(contentsOfFile: "data.bin", options: []))
+    i.e. let result: Result<NSData, NSError> = Result(try NSData(contentsOfFile: "data.bin", options: []))
     
     :param: f function to do a try catch on
     
@@ -58,6 +68,7 @@ public enum Result<T, Error: ErrorType> {
         }
     }
     
+
     /**
     Convert Result to a throwable function
     
@@ -79,8 +90,7 @@ public enum Result<T, Error: ErrorType> {
         case .Success(let value):
             return value
         case .Failure(let error):
-            throw error
-        }
+            throw error      }
     }
     
     
@@ -98,4 +108,7 @@ func ?! <T>(optional: T?, @autoclosure error: () -> ErrorType) throws -> T {
         throw error()
     }
 }
+
+
+
 
